@@ -1,21 +1,22 @@
 ﻿
 
+using static MyMountainApp.MTrailsBase;
+
 namespace MyMountainApp
 {
-    internal interface IMTrails
+    public interface IMTrails
     {
         string TrailName { get; }
-        string TrailDesc { get; }
+        string TrailDescription { get; }
         string TrailPlace { get; }
-        int HeightSeaLevel { get; }
+        int SeaLevel { get; }
         float LenghtOfTheTrail { get; }
 
+        event GradeAddedDelegate GradeAdded;
         void DifficultyLevel(float grade);
         void DifficultyLevel(string grade);
         void DifficultyLevel(double grade);
         void DifficultyLevel(long grade);
         Statistics GetStatistics();
-
-        
     }
 }

@@ -1,4 +1,4 @@
-using MyMountainApp;
+
 namespace MyMountainApp.Tests
 {
     public class Tests
@@ -43,13 +43,13 @@ namespace MyMountainApp.Tests
             MTrailsInMemory Trails = new MTrailsInMemory();
             Statistics statistics = new Statistics();
             //act
-            Trails.DifficultyLevel(4.5);
-            Trails.DifficultyLevel(5);
-            Trails.DifficultyLevel(2.2);
+            Trails.DifficultyLevel(1);
+            Trails.DifficultyLevel(0.1);
+            Trails.DifficultyLevel(0.5);
             statistics = Trails.GetStatistics();
 
             //assert
-            Assert.AreEqual("Hard", statistics.AverageString) ;
+            Assert.AreEqual("Very Light", statistics.AverageString) ;
 
         }
     }
