@@ -4,13 +4,13 @@ namespace MyMountainApp
 {
     public class MTrailsInMemory : MTrailsBase
     {
-        public MTrailsInMemory(string name, string desc, string place, int seaLevel, int lenght)
-             : base(name, desc, place, seaLevel, lenght)
+        public MTrailsInMemory(string name, string desc, string place, int lenght)
+             : base(name, desc, place, lenght)
         {
 
         }
         public MTrailsInMemory()
-          : base("NONE", "NONE", "NONE", 0, 0)
+          : base("NONE", "NONE", "NONE", 0)
         {
 
         }

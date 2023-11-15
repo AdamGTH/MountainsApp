@@ -7,31 +7,46 @@ namespace MyMountainApp
 {
     public class MTrailsInFile : MTrailsBase
     {
-        public MTrailsInFile(string name, string desc, string place, int seaLevel, int lenght)
-            : base(name, desc, place, seaLevel, lenght)
+        public MTrailsInFile(string name, string desc, string place, int lenght)
+            : base(name, desc, place, lenght)
         {
-            this.FileNameGrades = $"{name}.txt";
-            this.FileNameDescription = $"{name}-Description" ;
+            this.FileName = $"{name}.txt";
+            using (var writer = File.CreateText(this.FileName))
+            {
+                writer.WriteLine("Nazwa szlaku:");
+                writer.WriteLine(name+"\n");
+                writer.WriteLine("Miejsce:");
+                writer.WriteLine(place + "\n");
+                writer.WriteLine("Długość szlaku:");
+                writer.WriteLine(lenght + " metrów" + "\n");
+                writer.WriteLine("Opis:");
+                writer.WriteLine(desc + "\n");
+                writer.WriteLine("Oceny trudności:");
+            }
+            
         }
         public MTrailsInFile()
-          : base("NONE", "NONE", "NONE", 0, 0)
+          : base("NONE", "NONE", "NONE", 0)
         {
-            this.FileNameGrades = $"NoName.txt";
-            this.FileNameDescription = $"NoName-Description";
+            
         }
         public override event GradeAddedDelegate GradeAdded;
-        public string FileNameGrades;
-        public string FileNameDescription;
+        public string FileName;
         public override void DifficultyLevel(float grade)
         {
-            using (var writer = File.AppendText($"{base.TrailName}.txt"))
+            if (grade > 0 && grade <= 5)
             {
-                writer.WriteLine(grade);
+                using (var writer = File.AppendText(this.FileName))
+                {
+                    writer.WriteLine(grade);
+                }
+                if (GradeAdded != null)
+                {
+                    GradeAdded(this, new EventArgs());
+                }
             }
-            if (GradeAdded != null)
-            {
-                GradeAdded(this, new EventArgs());
-            }
+            else throw new Exception("Value is too large or smaler than zero ");
+            
         }
 
         public override void DifficultyLevel(string grade)
@@ -58,9 +73,9 @@ namespace MyMountainApp
             var statistics = new Statistics();
             List<float> grades = new List<float>();
 
-            if (File.Exists($"{base.TrailName}.txt"))
+            if (File.Exists(this.FileName))
             {
-                using (var reader = File.OpenText($"{base.TrailName}.txt"))
+                using (var reader = File.OpenText(this.FileName))
                 {
                     var lines = reader.ReadLine();
                     while (lines != null)
@@ -74,34 +89,11 @@ namespace MyMountainApp
                     statistics.AddGrade(grade);
                 }
             }
+            else
+                throw new Exception("File not exist !!!");
+
             return statistics;
         }
-
-        public void SaveDescription()
-        {
-            using (var writer = File.AppendText($"{base.TrailName}-Description.txt"))
-            {
-                writer.WriteLine(base.TrailDescription);
-            }
-        }
-
-        public string LoadDescription() 
-        {
-            string sumOfLine = "";
-            if(File.Exists($"{base.TrailName}-Description.txt"))
-            {
-                using (var reader = File.OpenText($"{base.TrailName}-Description.txt"))
-                {
-                    var line = reader.ReadLine();
-                    while (line != null)
-                    {
-                        sumOfLine += line + "\n";
-                        line = reader.ReadLine();
-                    }
-                }
-            }
-          
-            return sumOfLine;
-        }
+           
     }
 }
