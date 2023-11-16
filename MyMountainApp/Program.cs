@@ -29,21 +29,25 @@ while (true)
 {
     Console.WriteLine("1. Otwóż zapisane szlaki");
     Console.WriteLine("2. Dodaj kolejne szlaki");
-    Console.WriteLine("'q' kończy program");
+    Console.WriteLine("'q' -  kończy program");
     var read = Console.ReadLine();
 
     if (read == "1")
     {
-        int count = 1;
-        Console.WriteLine("Otwieranie");
-        Console.WriteLine();
-        Console.ForegroundColor = ConsoleColor.Green;
-        ReadTrails("ListOfNames.txt");
-        Console.ForegroundColor = ConsoleColor.White;
-        foreach(var item in ListOfTrails)
+        int numOfTrails = ShowTrailsList();
+        Console.WriteLine("'q' - wyjdź");
+        read = Console.ReadLine();
+        int idx = int.Parse(read);
+
+        if (read == "q") continue;
+        else if(idx <= numOfTrails && idx > 0) 
         {
-            Console.WriteLine($"{count}{item}");
-            count++;            
+            ShowTrail(ListOfTrails, idx);
+        }
+        else
+        {
+            Console.WriteLine("Value is not correct");
+            continue;
         }
     }
     else if (read == "2")
@@ -103,4 +107,43 @@ void ReadTrails(string fileName)
         Console.WriteLine("File is not exist !!!");
     }
     
+}
+
+int ShowTrailsList()
+{
+    int count = 1;
+    Console.WriteLine("Otwieranie");
+    Console.WriteLine();
+    Console.ForegroundColor = ConsoleColor.Green;
+    ReadTrails("ListOfNames.txt");
+    Console.ForegroundColor = ConsoleColor.White;
+    foreach (var item in ListOfTrails)
+    {
+        Console.WriteLine($"{count} - {item}");
+        count++;
+    }
+    return count - 1;
+}
+
+void ShowTrail(HashSet<string> list, int idx)
+{
+    var fileName = "";
+    int i = 0;
+    foreach (var item in list)
+    {
+        fileName = item;
+        if(i++ == (idx-1))
+        {
+            break;
+        }
+    }
+    using(var reader = File.OpenText($"{fileName}.txt"))
+    {
+        var line = reader.ReadLine();
+        while (line != null)
+        {
+            Console.WriteLine(line);
+            line = reader.ReadLine();
+        }
+    }
 }
