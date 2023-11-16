@@ -1,6 +1,8 @@
 ﻿
 
 using System.Diagnostics;
+using System.Reflection.PortableExecutable;
+using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 
 namespace MyMountainApp
@@ -23,7 +25,7 @@ namespace MyMountainApp
                 writer.WriteLine(desc + "\n");
                 writer.WriteLine("Oceny trudności:");
             }
-            
+            this.AddtoListOfNamesToFile();  
         }
         public MTrailsInFile()
           : base("NONE", "NONE", "NONE", 0)
@@ -44,6 +46,7 @@ namespace MyMountainApp
                 {
                     GradeAdded(this, new EventArgs());
                 }
+                
             }
             else throw new Exception("Value is too large or smaler than zero ");
             
@@ -70,19 +73,26 @@ namespace MyMountainApp
         }
         public override Statistics GetStatistics()
         {
+            string lines = "";
             var statistics = new Statistics();
             List<float> grades = new List<float>();
 
             if (File.Exists(this.FileName))
             {
                 using (var reader = File.OpenText(this.FileName))
-                {
-                    var lines = reader.ReadLine();
+                {                                       
+                    while (lines != "Oceny trudności:")
+                    {
+                        lines = reader.ReadLine();
+                    }
+                    
+                    lines = reader.ReadLine();
                     while (lines != null)
                     {
                         grades.Add(float.Parse(lines));
                         lines = reader.ReadLine();
                     }
+
                 }
                 foreach (var grade in grades)
                 {
@@ -93,6 +103,14 @@ namespace MyMountainApp
                 throw new Exception("File not exist !!!");
 
             return statistics;
+        }
+
+        public void AddtoListOfNamesToFile()
+        {
+            using(var writer = File.AppendText("ListOfNames.txt")) 
+            {
+                writer.WriteLine($" - {this.TrailName}");
+            }
         }
            
     }
