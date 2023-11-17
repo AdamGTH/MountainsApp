@@ -14,7 +14,7 @@ namespace MyMountainApp
         public string TrailName {  get; private set; }
         public string TrailDescription { get; private set; }
         public string TrailPlace { get; private set; }
-        public float LenghtOfTheTrail { get; private set; }
+        public int LenghtOfTheTrail { get; private set; }
 
         public delegate void GradeAddedDelegate(object sender, EventArgs args);
 

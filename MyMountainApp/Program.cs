@@ -6,7 +6,7 @@ Console.WriteLine(" Witaj w aplikacji o górskich szlakach");
 Console.WriteLine("========================================");
 
 HashSet<string> ListOfTrailsNames = new HashSet<string>();
-List<MTrailsInFile> ListOfTrails = new List<MTrailsInFile>();
+List<MTrailsInMemory> ListOfTrails = new List<MTrailsInMemory>();
 
 ReadTrails();
 
@@ -27,8 +27,11 @@ while (true)
         {
             idx = intValue;
         }
-        
-        if (read == "q") continue;
+
+        if (read == "q") 
+        {
+            continue;
+        } 
         else if(idx <= ListOfTrails.Count && idx > 0) 
         {
             ShowTrail(idx-1);
@@ -47,6 +50,7 @@ while (true)
     else if (read == "q")
     {
         Console.ForegroundColor = ConsoleColor.Green;
+        SaveTrails();
         Console.WriteLine("Program został poprawnie zamknięty");
         Console.ForegroundColor= ConsoleColor.White;
         break;
@@ -103,13 +107,23 @@ void ReadTrails()
             }
                         
         }
-        MTrailsInFile trailsFromFile = new MTrailsInFile(name, description, place, lenght);
-        foreach(var grade in grades)
+        MTrailsInMemory trailInMemo = new MTrailsInMemory(name, description, place, lenght);
+        for(int i = 0; i<grades.Count; i++)
         {
-            trailsFromFile.DifficultyLevel(grade);
+            try
+            {
+                trailInMemo.DifficultyLevel(grades[i]);
+                grades[i] = null;
+            }
+            catch (Exception ex)
+            {
+                continue;
+            }
+                      
         }
-        trailsFromFile.GradeAdded += EventAddedGrade;
-        ListOfTrails.Add(trailsFromFile);
+        
+        trailInMemo.GradeAdded += EventAddedGrade;
+        ListOfTrails.Add(trailInMemo);
     }
 }
 
@@ -157,15 +171,18 @@ void ShowTrail(int idx)
 {
     Statistics statistics = new Statistics();
     Console.ForegroundColor = ConsoleColor.Green;
-    using (var reader = File.OpenText($"{ListOfTrails[idx].TrailName}.txt"))
+    Console.WriteLine("Nazwa szlaku:");
+    Console.WriteLine($"{ListOfTrails[idx].TrailName}\n");
+    Console.WriteLine("Miejsce:");
+    Console.WriteLine($"{ListOfTrails[idx].TrailPlace}\n");
+    Console.WriteLine("Opis:");
+    Console.WriteLine($"{ListOfTrails[idx].TrailDescription}\n");
+    Console.WriteLine("Oceny trudności:");
+    foreach(var grad in ListOfTrails[idx].Grades)
     {
-        var line = reader.ReadLine();
-        while (line != null)
-        {
-            Console.WriteLine(line);
-            line = reader.ReadLine();
-        }
+        Console.WriteLine($"{grad}");
     }
+
     Console.ForegroundColor = ConsoleColor.White;
     Console.WriteLine("\nDodaj swoją ocenę trudności szlaku w skali od 1 do 5 i wyświetl statystyki: ");
     Console.WriteLine("'q' - wyjdź");
@@ -207,7 +224,7 @@ void addTrail()
     Console.WriteLine("Opisz szlak: ");
     string description = Console.ReadLine();
 
-    MTrailsInFile newTrail = new MTrailsInFile(name, description, place, lenghtInt);
+    MTrailsInMemory newTrail = new MTrailsInMemory(name, description, place, lenghtInt);
     Console.ForegroundColor = ConsoleColor.Green;
     Console.WriteLine("Nowy szlak został dodany !");
     Console.ForegroundColor = ConsoleColor.White;
@@ -217,7 +234,6 @@ void addTrail()
     if (gradeString == "q")
     {
         ListOfTrails.Add(newTrail);
-        
         return;
     }
     if (float.TryParse(gradeString, out var grade))
@@ -240,4 +256,12 @@ void addTrail()
     }
     ListOfTrails.Add(newTrail);
     
+}
+
+void SaveTrails()
+{
+    foreach(var trail in ListOfTrails)
+    {
+        MTrailsInFile trailFile = new MTrailsInFile(trail.TrailName, trail.TrailDescription, trail.TrailPlace, trail.LenghtOfTheTrail, trail.Grades);
+    }
 }

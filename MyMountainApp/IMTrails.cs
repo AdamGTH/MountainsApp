@@ -9,7 +9,7 @@ namespace MyMountainApp
         string TrailName { get; }
         string TrailDescription { get; }
         string TrailPlace { get; }
-        float LenghtOfTheTrail { get; }
+        int LenghtOfTheTrail { get; }
 
         event GradeAddedDelegate GradeAdded;
         

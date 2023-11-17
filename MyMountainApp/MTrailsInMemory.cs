@@ -15,7 +15,7 @@ namespace MyMountainApp
 
         }
 
-        List<float> Grades = new List<float>();
+        public List<float> Grades = new List<float>();
 
         public override event GradeAddedDelegate GradeAdded;
         

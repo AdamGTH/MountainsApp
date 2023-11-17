@@ -10,7 +10,7 @@ namespace MyMountainApp
 {
     public class MTrailsInFile : MTrailsBase
     {
-        public MTrailsInFile(string name, string desc, string place, int lenght)
+        public MTrailsInFile(string name, string desc, string place, int lenght, List<float>grades)
             : base(name, desc, place, lenght)
         {
             this.FileName = $"{name}.txt";
@@ -25,6 +25,10 @@ namespace MyMountainApp
                 writer.WriteLine("Description:");
                 writer.WriteLine(desc + "\n");
                 writer.WriteLine("Grades:");
+                foreach(var grade in grades)
+                {
+                    writer.WriteLine(grade);
+                }
             }
             this.AddtoListOfNamesToFile();
             
