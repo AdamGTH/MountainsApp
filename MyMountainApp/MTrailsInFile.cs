@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Reflection.PortableExecutable;
 using System.Runtime.CompilerServices;
 using System.Xml.Linq;
+using static MyMountainApp.MTrailsBase;
 
 namespace MyMountainApp
 {
@@ -15,24 +16,27 @@ namespace MyMountainApp
             this.FileName = $"{name}.txt";
             using (var writer = File.CreateText(this.FileName))
             {
-                writer.WriteLine("Nazwa szlaku:");
+                writer.WriteLine("Name:");
                 writer.WriteLine(name+"\n");
-                writer.WriteLine("Miejsce:");
+                writer.WriteLine("Place:");
                 writer.WriteLine(place + "\n");
-                writer.WriteLine("Długość szlaku:");
-                writer.WriteLine(lenght + " metrów" + "\n");
-                writer.WriteLine("Opis:");
+                writer.WriteLine("Lenght of the meters:");
+                writer.WriteLine(lenght + "\n");
+                writer.WriteLine("Description:");
                 writer.WriteLine(desc + "\n");
-                writer.WriteLine("Oceny trudności:");
+                writer.WriteLine("Grades:");
             }
-            this.AddtoListOfNamesToFile();  
+            this.AddtoListOfNamesToFile();
+            
         }
         public MTrailsInFile()
           : base("NONE", "NONE", "NONE", 0)
         {
             
         }
+
         public override event GradeAddedDelegate GradeAdded;
+        List<float> Grades = new List<float>();
         public string FileName;
         public override void DifficultyLevel(float grade)
         {
@@ -41,6 +45,7 @@ namespace MyMountainApp
                 using (var writer = File.AppendText(this.FileName))
                 {
                     writer.WriteLine(grade);
+                    this.Grades.Add(grade);
                 }
                 if (GradeAdded != null)
                 {
@@ -75,13 +80,12 @@ namespace MyMountainApp
         {
             string lines = "";
             var statistics = new Statistics();
-            List<float> grades = new List<float>();
-
+            
             if (File.Exists(this.FileName))
             {
                 using (var reader = File.OpenText(this.FileName))
                 {                                       
-                    while (lines != "Oceny trudności:")
+                    while (lines != "Grades:")
                     {
                         lines = reader.ReadLine();
                     }
@@ -89,12 +93,12 @@ namespace MyMountainApp
                     lines = reader.ReadLine();
                     while (lines != null)
                     {
-                        grades.Add(float.Parse(lines));
+                        this.Grades.Add(float.Parse(lines));
                         lines = reader.ReadLine();
                     }
 
                 }
-                foreach (var grade in grades)
+                foreach (var grade in this.Grades)
                 {
                     statistics.AddGrade(grade);
                 }
@@ -109,7 +113,7 @@ namespace MyMountainApp
         {
             using(var writer = File.AppendText("ListOfNames.txt")) 
             {
-                writer.WriteLine($" - {this.TrailName}");
+                writer.WriteLine($"{this.TrailName}");
             }
         }
            

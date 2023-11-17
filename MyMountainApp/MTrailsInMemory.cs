@@ -7,7 +7,7 @@ namespace MyMountainApp
         public MTrailsInMemory(string name, string desc, string place, int lenght)
              : base(name, desc, place, lenght)
         {
-
+            
         }
         public MTrailsInMemory()
           : base("NONE", "NONE", "NONE", 0)
@@ -18,7 +18,7 @@ namespace MyMountainApp
         List<float> Grades = new List<float>();
 
         public override event GradeAddedDelegate GradeAdded;
-
+        
         public override Statistics GetStatistics()
         {
             var statistics = new Statistics();

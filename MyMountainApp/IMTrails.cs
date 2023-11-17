@@ -12,6 +12,7 @@ namespace MyMountainApp
         float LenghtOfTheTrail { get; }
 
         event GradeAddedDelegate GradeAdded;
+        
         void DifficultyLevel(float grade);
         void DifficultyLevel(string grade);
         void DifficultyLevel(double grade);

@@ -19,6 +19,7 @@ namespace MyMountainApp
         public delegate void GradeAddedDelegate(object sender, EventArgs args);
 
         public abstract event GradeAddedDelegate GradeAdded;
+        
         public abstract void DifficultyLevel(float grade);
         public abstract void DifficultyLevel(string grade);
         public abstract void DifficultyLevel(double grade);
