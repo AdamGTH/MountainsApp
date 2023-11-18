@@ -30,8 +30,26 @@ namespace MyMountainApp
                     writer.WriteLine(grade);
                 }
             }
-            this.AddtoListOfNamesToFile();
-            
+                     
+        }
+        public MTrailsInFile(string name, string desc, string place, int lenght)
+            : base(name, desc, place, lenght)
+        {
+            this.FileName = $"{name}.txt";
+            using (var writer = File.CreateText(this.FileName))
+            {
+                writer.WriteLine("Name:");
+                writer.WriteLine(name + "\n");
+                writer.WriteLine("Place:");
+                writer.WriteLine(place + "\n");
+                writer.WriteLine("Lenght of the meters:");
+                writer.WriteLine(lenght + "\n");
+                writer.WriteLine("Description:");
+                writer.WriteLine(desc + "\n");
+                writer.WriteLine("Grades:");
+               
+            }
+
         }
         public MTrailsInFile()
           : base("NONE", "NONE", "NONE", 0)

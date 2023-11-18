@@ -224,7 +224,10 @@ void addTrail()
     Console.WriteLine("Opisz szlak: ");
     string description = Console.ReadLine();
 
-    MTrailsInMemory newTrail = new MTrailsInMemory(name, description, place, lenghtInt);
+    MTrailsInMemory newTrailInMemory = new MTrailsInMemory(name, description, place, lenghtInt);
+    MTrailsInFile newTrailInFile = new MTrailsInFile(name, description, place, lenghtInt);
+    newTrailInFile.AddtoListOfNamesToFile();
+
     Console.ForegroundColor = ConsoleColor.Green;
     Console.WriteLine("Nowy szlak został dodany !");
     Console.ForegroundColor = ConsoleColor.White;
@@ -233,18 +236,19 @@ void addTrail()
     var gradeString = Console.ReadLine();
     if (gradeString == "q")
     {
-        ListOfTrails.Add(newTrail);
+        ListOfTrails.Add(newTrailInMemory);
         return;
     }
     if (float.TryParse(gradeString, out var grade))
     {
         try 
         {
-            newTrail.DifficultyLevel(grade);
-            statistics = newTrail.GetStatistics();
+            newTrailInMemory.DifficultyLevel(grade);
+            statistics = newTrailInMemory.GetStatistics();
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"Maksymalna ocena: {statistics.Max}");
             Console.WriteLine($"Minimalna ocena: {statistics.Min}");
+            Console.WriteLine($"Ilość ocen: {statistics.Count}");
             Console.WriteLine($"Średnia: {statistics.Average}");
             Console.WriteLine($"Poziom trudności: {statistics.AverageString}");
             Console.ForegroundColor = ConsoleColor.White;
@@ -254,7 +258,7 @@ void addTrail()
             Console.WriteLine(ex.ToString());
         }
     }
-    ListOfTrails.Add(newTrail);
+    ListOfTrails.Add(newTrailInMemory);
     
 }
 
