@@ -13,7 +13,7 @@ ReadTrails();
 while (true)
 {
     Console.WriteLine("\n1. Otwóż zapisane szlaki");
-    Console.WriteLine("2. Dodaj kolejne szlaki");
+    Console.WriteLine("2. Dodaj nowy szlak górski");
     Console.WriteLine("'q' -  kończy program");
     var read = Console.ReadLine();
 
@@ -146,7 +146,7 @@ HashSet<string> ReadTrailsNames(string fileName)
     else
     {
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("File is not exist !!!");
+        Console.WriteLine("Nie znaleziono listy zapisanych szlaków. Dodaj nowy szlak");
         Console.ForegroundColor = ConsoleColor.White;
     }
     return trails;
