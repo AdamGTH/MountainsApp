@@ -10,46 +10,11 @@ namespace MyMountainApp
 {
     public class MTrailsInFile : MTrailsBase
     {
-        public MTrailsInFile(string name, string desc, string place, int lenght, List<float>grades)
-            : base(name, desc, place, lenght)
-        {
-            this.FileName = $"{name}.txt";
-            using (var writer = File.CreateText(this.FileName))
-            {
-                writer.WriteLine("Name:");
-                writer.WriteLine(name+"\n");
-                writer.WriteLine("Place:");
-                writer.WriteLine(place + "\n");
-                writer.WriteLine("Lenght of the meters:");
-                writer.WriteLine(lenght + "\n");
-                writer.WriteLine("Description:");
-                writer.WriteLine(desc + "\n");
-                writer.WriteLine("Grades:");
-                foreach(var grade in grades)
-                {
-                    writer.WriteLine(grade);
-                }
-            }
-                     
-        }
+       
         public MTrailsInFile(string name, string desc, string place, int lenght)
             : base(name, desc, place, lenght)
         {
             this.FileName = $"{name}.txt";
-            using (var writer = File.CreateText(this.FileName))
-            {
-                writer.WriteLine("Name:");
-                writer.WriteLine(name + "\n");
-                writer.WriteLine("Place:");
-                writer.WriteLine(place + "\n");
-                writer.WriteLine("Lenght of the meters:");
-                writer.WriteLine(lenght + "\n");
-                writer.WriteLine("Description:");
-                writer.WriteLine(desc + "\n");
-                writer.WriteLine("Grades:");
-               
-            }
-
         }
         public MTrailsInFile()
           : base("NONE", "NONE", "NONE", 0)
@@ -58,7 +23,6 @@ namespace MyMountainApp
         }
 
         public override event GradeAddedDelegate GradeAdded;
-        List<float> Grades = new List<float>();
         public string FileName;
         public override void DifficultyLevel(float grade)
         {
@@ -67,7 +31,6 @@ namespace MyMountainApp
                 using (var writer = File.AppendText(this.FileName))
                 {
                     writer.WriteLine(grade);
-                    this.Grades.Add(grade);
                 }
                 if (GradeAdded != null)
                 {
@@ -75,12 +38,13 @@ namespace MyMountainApp
                 }
                 
             }
-            else throw new Exception("Value is too large or smaler than zero ");
+            else throw new Exception("Value is too large or smaller than zero ");
             
         }
 
         public override void DifficultyLevel(string grade)
         {
+            
             if (float.TryParse(grade, out var points))
             {
                 this.DifficultyLevel(points);
@@ -100,27 +64,23 @@ namespace MyMountainApp
         }
         public override Statistics GetStatistics()
         {
-            string lines = "";
+            string line = "";
             var statistics = new Statistics();
+            List<float> grades = new List<float>();    
             
             if (File.Exists(this.FileName))
             {
                 using (var reader = File.OpenText(this.FileName))
                 {                                       
-                    while (lines != "Grades:")
+                
+                    line = reader.ReadLine();
+                    while(line != null)
                     {
-                        lines = reader.ReadLine();
+                        grades.Add(float.Parse(line));
+                        line = reader.ReadLine();
                     }
-                    
-                    lines = reader.ReadLine();
-                    while (lines != null)
-                    {
-                        this.Grades.Add(float.Parse(lines));
-                        lines = reader.ReadLine();
-                    }
-
                 }
-                foreach (var grade in this.Grades)
+                foreach (var grade in grades)
                 {
                     statistics.AddGrade(grade);
                 }
@@ -131,13 +91,6 @@ namespace MyMountainApp
             return statistics;
         }
 
-        public void AddtoListOfNamesToFile()
-        {
-            using(var writer = File.AppendText("ListOfNames.txt")) 
-            {
-                writer.WriteLine($"{this.TrailName}");
-            }
-        }
-           
+                   
     }
 }
