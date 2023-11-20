@@ -15,7 +15,7 @@ namespace MyMountainApp
 
         }
 
-        List<float> Grades = new List<float>();
+        List<float> grades = new List<float>();
 
         public override event GradeAddedDelegate GradeAdded;
         
@@ -23,7 +23,7 @@ namespace MyMountainApp
         {
             var statistics = new Statistics();
 
-            foreach (var grade in this.Grades)
+            foreach (var grade in this.grades)
             {
                 statistics.AddGrade(grade);
             }
@@ -35,7 +35,7 @@ namespace MyMountainApp
         {
             if (grade >= 0 && grade <= 5)
             {
-                this.Grades.Add(grade);
+                this.grades.Add(grade);
                 if (GradeAdded != null)
                 {
                     GradeAdded(this, new EventArgs());
@@ -45,26 +45,6 @@ namespace MyMountainApp
             else
                 throw new Exception("Invalid data");
         }
-
-        public override void DifficultyLevel(string grade)
-        {
-            if (float.TryParse(grade, out var points))
-            {
-                this.DifficultyLevel(points);
-            }
-            else
-                throw new Exception("Value is not float");
-        }
-
-        public override void DifficultyLevel(double grade)
-        {
-            this.DifficultyLevel((float)grade); 
-        }
-
-        public override void DifficultyLevel(long grade)
-        {
-            this.DifficultyLevel((float)grade);
-        }
-
+        
     }
 }

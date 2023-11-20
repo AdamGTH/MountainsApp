@@ -7,13 +7,13 @@ namespace MyMountainApp.Tests
         public void TestMethodDifficultyLevelAndSumValuesFromStatistics()
         {
             //arrange
-            MTrailsInMemory Trails = new MTrailsInMemory();
+            MTrailsInMemory trails = new MTrailsInMemory();
             Statistics statistics = new Statistics();
             //act
-            Trails.DifficultyLevel(4.5);
-            Trails.DifficultyLevel(5);
-            Trails.DifficultyLevel(2.2);
-            statistics = Trails.GetStatistics();
+            trails.DifficultyLevel(4.5);
+            trails.DifficultyLevel(5);
+            trails.DifficultyLevel(2.2);
+            statistics = trails.GetStatistics();
 
             //assert
             Assert.AreEqual(11.7f, statistics.Sum);
@@ -24,12 +24,12 @@ namespace MyMountainApp.Tests
         public void TestMethodDifficultyLevelAndAverageValuesFromStatistics()
         {
             //arrange
-            MTrailsInMemory Trails = new MTrailsInMemory();
+            MTrailsInMemory trails = new MTrailsInMemory();
             Statistics statistics = new Statistics();
             //act
-            Trails.DifficultyLevel(4.5);
-            Trails.DifficultyLevel(5);
-            Trails.DifficultyLevel(2.2);
+            trails.DifficultyLevel(4.5);
+            trails.DifficultyLevel(5);
+            trails.DifficultyLevel(2.2);
             statistics = Trails.GetStatistics();
 
             //assert
@@ -40,12 +40,12 @@ namespace MyMountainApp.Tests
         public void TestMethodDifficultyLevelAndAverageStringValuesFromStatistics()
         {
             //arrange
-            MTrailsInMemory Trails = new MTrailsInMemory();
+            MTrailsInMemory trails = new MTrailsInMemory();
             Statistics statistics = new Statistics();
             //act
-            Trails.DifficultyLevel(1);
-            Trails.DifficultyLevel(0.1);
-            Trails.DifficultyLevel(0.5);
+            trails.DifficultyLevel(1);
+            trails.DifficultyLevel(0.1);
+            trails.DifficultyLevel(0.5);
             statistics = Trails.GetStatistics();
 
             //assert

@@ -41,27 +41,6 @@ namespace MyMountainApp
             else throw new Exception("Value is too large or smaller than zero ");
             
         }
-
-        public override void DifficultyLevel(string grade)
-        {
-            
-            if (float.TryParse(grade, out var points))
-            {
-                this.DifficultyLevel(points);
-            }
-            else
-                throw new Exception("Value is not float");
-        }
-
-        public override void DifficultyLevel(double grade)
-        {
-            this.DifficultyLevel((float)grade);
-        }
-
-        public override void DifficultyLevel(long grade)
-        {
-            this.DifficultyLevel((float)grade);
-        }
         public override Statistics GetStatistics()
         {
             string line = "";

@@ -19,12 +19,29 @@ namespace MyMountainApp
         public delegate void GradeAddedDelegate(object sender, EventArgs args);
 
         public abstract event GradeAddedDelegate GradeAdded;
-        
-        public abstract void DifficultyLevel(float grade);
-        public abstract void DifficultyLevel(string grade);
-        public abstract void DifficultyLevel(double grade);
-        public abstract void DifficultyLevel(long grade);
+              
         public abstract Statistics GetStatistics();
-        
+        public abstract void DifficultyLevel(float grade);
+        public void DifficultyLevel(string grade)
+        {
+
+            if (float.TryParse(grade, out var points))
+            {
+                this.DifficultyLevel(points);
+            }
+            else
+                throw new Exception("Value is not float");
+        }
+
+        public void DifficultyLevel(double grade)
+        {
+            this.DifficultyLevel((float)grade);
+        }
+
+        public void DifficultyLevel(long grade)
+        {
+            this.DifficultyLevel((float)grade);
+        }
+                
     }
 }
